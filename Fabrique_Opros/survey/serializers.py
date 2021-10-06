@@ -2,8 +2,8 @@ from rest_framework import serializers
 from . import models
 
 
-class SurveySerializer(models.Model):
+class SurveySerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Survey
-        fields = ('IdVisNumber', 'IdDoc', 'NameDoc')
+        fields = ('id', 'Name', 'DateStart', 'DateEnd', 'Description')
 
