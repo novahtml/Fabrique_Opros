@@ -3,11 +3,14 @@ from django.contrib.auth.models import User
 
 
 class Survey(models.Model):
-    Name = models.CharField(max_length=150, db_index=True)
-    DateStart = models.DateField(null=False)
-    DateEnd = models.DateField(null=True, blank=True)
-    Description = models.CharField(max_length=4000)
-    DateCreate = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    name = models.CharField(max_length=150, db_index=True)
+    date_start = models.DateField(null=False)
+    date_end = models.DateField(null=True, blank=True)
+    description = models.CharField(max_length=4000)
+    date_create = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
 
 
 TypeQuestion = (
@@ -18,22 +21,33 @@ TypeQuestion = (
 
 
 class Question(models.Model):
-    Text = models.CharField(max_length=200)
-    Type = models.SmallIntegerField(choices=TypeQuestion)
-    Survey = models.ForeignKey(Survey, on_delete=models.CASCADE)
+    text = models.CharField(max_length=200)
+    type = models.SmallIntegerField(choices=TypeQuestion)
+    survey = models.ForeignKey(Survey, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.text
 
 
 class Answer(models.Model):
-    Question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    Text = models.CharField(max_length=200)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    text = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.text
 
 
 class UserAnswer(models.Model):
-    User = models.ForeignKey(User, on_delete=models.CASCADE)
-    Question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    Answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
 
 
 class AnswerText(models.Model):
-    UserAnswer = models.ForeignKey(UserAnswer, on_delete=models.CASCADE)
-    Text = models.CharField(max_length=200)
+    user_answer = models.ForeignKey(UserAnswer, on_delete=models.CASCADE)
+    text = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.text
+
+
